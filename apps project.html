@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transistor Materials Simulation</title>
+    <title>Interactive Transistor Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,50 +55,25 @@
             border: 1px solid #ccd;
             border-radius: 8px;
         }
-        #animation-container {
-            margin: 20px auto;
-            position: relative;
-            width: 300px;
-            height: 150px;
-            background: #fff;
-            border: 1px solid #ddd;
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        .electron {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #00e676;
-            border-radius: 50%;
-            animation: move-linear 3s linear infinite;
-        }
-        .electron.germanium {
-            animation-duration: 2s;
-        }
-        .electron.gaAs {
-            animation-duration: 1s;
-        }
-        @keyframes move-linear {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(280px); }
+        #graph-container {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Transistor Materials Simulation</h1>
+    <h1>Interactive Transistor Materials Simulation</h1>
 </header>
 
 <main>
-    <p>Select a material below to learn how it affects transistor performance:</p>
+    <p>Select a material below to view its details and see a performance graph:</p>
     <div id="materials">
         <div class="material-card">
             <img src="https://via.placeholder.com/100" alt="Silicon">
             <h3>Silicon (Si)</h3>
             <p>Widely used in most transistors due to its abundance and thermal stability.</p>
-            <button onclick="showMaterialInfo('Silicon', 'Thermally stable and cost-effective, used in almost all modern transistors.', 'silicon')">
+            <button onclick="showMaterialInfo('Silicon', 'Thermally stable and cost-effective, used in almost all modern transistors.', [1, 2, 3, 4, 5])">
                 Learn More
             </button>
         </div>
@@ -105,7 +81,7 @@
             <img src="https://via.placeholder.com/100" alt="Germanium">
             <h3>Germanium (Ge)</h3>
             <p>Used in high-speed and low-voltage transistors.</p>
-            <button onclick="showMaterialInfo('Germanium', 'Offers higher electron mobility, but less thermally stable than silicon.', 'germanium')">
+            <button onclick="showMaterialInfo('Germanium', 'Offers higher electron mobility, but less thermally stable than silicon.', [2, 3, 4, 5, 6])">
                 Learn More
             </button>
         </div>
@@ -113,7 +89,7 @@
             <img src="https://via.placeholder.com/100" alt="Gallium Arsenide">
             <h3>Gallium Arsenide (GaAs)</h3>
             <p>Used in high-frequency and optoelectronic devices.</p>
-            <button onclick="showMaterialInfo('Gallium Arsenide', 'Excellent electron mobility and high-speed performance, but expensive.', 'gaAs')">
+            <button onclick="showMaterialInfo('Gallium Arsenide', 'Excellent electron mobility and high-speed performance, but expensive.', [3, 4, 5, 6, 7])">
                 Learn More
             </button>
         </div>
@@ -123,28 +99,64 @@
         <h2>Material Info</h2>
         <p id="material-name"></p>
         <p id="material-description"></p>
-        <div id="animation-container"></div>
+        <div id="graph-container">
+            <canvas id="performanceGraph"></canvas>
+        </div>
     </div>
 </main>
 
 <script>
-    function showMaterialInfo(name, description, materialClass) {
-        // Update Material Info
+    let chart;
+
+    function showMaterialInfo(name, description, performanceData) {
+        // Display material details
         document.getElementById('simulation-result').style.display = 'block';
         document.getElementById('material-name').textContent = "Material: " + name;
         document.getElementById('material-description').textContent = "Details: " + description;
 
-        // Clear previous animation
-        const container = document.getElementById('animation-container');
-        container.innerHTML = '';
-
-        // Add electrons for simulation
-        for (let i = 0; i < 5; i++) {
-            const electron = document.createElement('div');
-            electron.classList.add('electron', materialClass);
-            electron.style.top = `${20 + i * 25}px`;
-            container.appendChild(electron);
-        }
+        // Generate the performance graph
+        const ctx = document.getElementById('performanceGraph').getContext('2d');
+        if (chart) chart.destroy(); // Destroy previous chart to avoid overlap
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['0V', '1V', '2V', '3V', '4V'], // Voltage range
+                datasets: [{
+                    label: 'Performance (Current)',
+                    data: performanceData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Voltage (V)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Current (A)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     }
 </script>
 
