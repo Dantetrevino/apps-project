@@ -54,6 +54,34 @@
             border: 1px solid #ccd;
             border-radius: 8px;
         }
+        #animation-container {
+            margin: 20px auto;
+            position: relative;
+            width: 300px;
+            height: 150px;
+            background: #fff;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .electron {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #00e676;
+            border-radius: 50%;
+            animation: move-linear 3s linear infinite;
+        }
+        .electron.germanium {
+            animation-duration: 2s;
+        }
+        .electron.gaAs {
+            animation-duration: 1s;
+        }
+        @keyframes move-linear {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(280px); }
+        }
     </style>
 </head>
 <body>
@@ -69,7 +97,7 @@
             <img src="https://via.placeholder.com/100" alt="Silicon">
             <h3>Silicon (Si)</h3>
             <p>Widely used in most transistors due to its abundance and thermal stability.</p>
-            <button onclick="showMaterialInfo('Silicon', 'Thermally stable and cost-effective, used in almost all modern transistors.')">
+            <button onclick="showMaterialInfo('Silicon', 'Thermally stable and cost-effective, used in almost all modern transistors.', 'silicon')">
                 Learn More
             </button>
         </div>
@@ -77,7 +105,7 @@
             <img src="https://via.placeholder.com/100" alt="Germanium">
             <h3>Germanium (Ge)</h3>
             <p>Used in high-speed and low-voltage transistors.</p>
-            <button onclick="showMaterialInfo('Germanium', 'Offers higher electron mobility, but less thermally stable than silicon.')">
+            <button onclick="showMaterialInfo('Germanium', 'Offers higher electron mobility, but less thermally stable than silicon.', 'germanium')">
                 Learn More
             </button>
         </div>
@@ -85,7 +113,7 @@
             <img src="https://via.placeholder.com/100" alt="Gallium Arsenide">
             <h3>Gallium Arsenide (GaAs)</h3>
             <p>Used in high-frequency and optoelectronic devices.</p>
-            <button onclick="showMaterialInfo('Gallium Arsenide', 'Excellent electron mobility and high-speed performance, but expensive.')">
+            <button onclick="showMaterialInfo('Gallium Arsenide', 'Excellent electron mobility and high-speed performance, but expensive.', 'gaAs')">
                 Learn More
             </button>
         </div>
@@ -95,14 +123,28 @@
         <h2>Material Info</h2>
         <p id="material-name"></p>
         <p id="material-description"></p>
+        <div id="animation-container"></div>
     </div>
 </main>
 
 <script>
-    function showMaterialInfo(name, description) {
+    function showMaterialInfo(name, description, materialClass) {
+        // Update Material Info
         document.getElementById('simulation-result').style.display = 'block';
         document.getElementById('material-name').textContent = "Material: " + name;
         document.getElementById('material-description').textContent = "Details: " + description;
+
+        // Clear previous animation
+        const container = document.getElementById('animation-container');
+        container.innerHTML = '';
+
+        // Add electrons for simulation
+        for (let i = 0; i < 5; i++) {
+            const electron = document.createElement('div');
+            electron.classList.add('electron', materialClass);
+            electron.style.top = `${20 + i * 25}px`;
+            container.appendChild(electron);
+        }
     }
 </script>
 
