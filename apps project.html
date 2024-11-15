@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transistor Materials Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: #6200ea;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        .material-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            display: inline-block;
+            width: 250px;
+            text-align: center;
+            background: #fff;
+        }
+        .material-card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        .material-card button {
+            padding: 8px 15px;
+            background: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .material-card button:hover {
+            background: #3700b3;
+        }
+        #simulation-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eef;
+            border: 1px solid #ccd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Transistor Materials Simulation</h1>
+</header>
+
+<main>
+    <p>Select a material below to learn how it affects transistor performance:</p>
+    <div id="materials">
+        <div class="material-card">
+            <img src="https://via.placeholder.com/100" alt="Silicon">
+            <h3>Silicon (Si)</h3>
+            <p>Widely used in most transistors due to its abundance and thermal stability.</p>
+            <button onclick="showMaterialInfo('Silicon', 'Thermally stable and cost-effective, used in almost all modern transistors.')">
+                Learn More
+            </button>
+        </div>
+        <div class="material-card">
+            <img src="https://via.placeholder.com/100" alt="Germanium">
+            <h3>Germanium (Ge)</h3>
+            <p>Used in high-speed and low-voltage transistors.</p>
+            <button onclick="showMaterialInfo('Germanium', 'Offers higher electron mobility, but less thermally stable than silicon.')">
+                Learn More
+            </button>
+        </div>
+        <div class="material-card">
+            <img src="https://via.placeholder.com/100" alt="Gallium Arsenide">
+            <h3>Gallium Arsenide (GaAs)</h3>
+            <p>Used in high-frequency and optoelectronic devices.</p>
+            <button onclick="showMaterialInfo('Gallium Arsenide', 'Excellent electron mobility and high-speed performance, but expensive.')">
+                Learn More
+            </button>
+        </div>
+    </div>
+
+    <div id="simulation-result" style="display: none;">
+        <h2>Material Info</h2>
+        <p id="material-name"></p>
+        <p id="material-description"></p>
+    </div>
+</main>
+
+<script>
+    function showMaterialInfo(name, description) {
+        document.getElementById('simulation-result').style.display = 'block';
+        document.getElementById('material-name').textContent = "Material: " + name;
+        document.getElementById('material-description').textContent = "Details: " + description;
+    }
+</script>
+
+</body>
+</html>
